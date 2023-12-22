@@ -1,0 +1,38 @@
+
+run the following on command line
+
+pip install pandas
+pip install math
+pip install gc
+pip install julian
+pip install numpy
+pip install astropy
+pip install scipy
+pip install re
+pip install datetime
+pip install statistics
+pip install matplotlib
+pip install sklearn
+pip install pdb
+pip install seaborn
+pip install plotly
+pip install swifttools
+
+install.packages('readxl', repos='http://cran.us.r-project.org')
+install.packages('plotly', repos='http://cran.us.r-project.org')
+install.packages('tidyr', repos='http://cran.us.r-project.org')
+install.packages('e1071', repos='http://cran.us.r-project.org')
+install.packages('misc3d', repos='http://cran.us.r-project.org')
+install.packages('plot3D', repos='http://cran.us.r-project.org')
+install.packages('scatterplot3d', repos='http://cran.us.r-project.org')
+install.packages('rgl', repos='http://cran.us.r-project.org')
+install.packages('data.table', repos='http://cran.us.r-project.org')
+install.packages('caret', repos='http://cran.us.r-project.org')
+install.packages('rfUtilities', repos='http://cran.us.r-project.org')
+install.packages('readr', repos='http://cran.us.r-project.org')
+install.packages('scales', repos='http://cran.us.r-project.org')
+install.packages('ggplot2', repos='http://cran.us.r-project.org')
+install.packages('ggfortify', repos='http://cran.us.r-project.org')
+install.packages('colorspace', repos='http://cran.us.r-project.org')
+
+Note that you may have to change can.us.r-project.org to your country's mirror.

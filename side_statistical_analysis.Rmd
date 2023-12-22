@@ -11,8 +11,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(readxl)
 library(plotly)
 library(tidyr)
-library("scatterplot3d")
-library(randomForest)
+# library("scatterplot3d")
+# library(randomForest)
 library(e1071)
 library(misc3d)
 library(plot3D)
@@ -26,8 +26,8 @@ library(scales)
 library(ggplot2)
 library(ggfortify)
 library(colorspace)
-library(dplyr)
-library(Peacock.test)
+# library(dplyr)
+# library(Peacock.test)
 # library(tidyverse)
 set.seed(1729)
 ### SET YOUR FILEPATH
@@ -216,40 +216,40 @@ temp_color<-diverging_hcl(length(predictions))[rank(predictions)]
 plot3d(x=new_Goldstein_S2_Data[unknown_remover,]$Peak_E, y=new_Goldstein_S2_Data[unknown_remover,]$Fluence, z=new_Goldstein_S2_Data[unknown_remover,]$t90, ylab="Prompt Fluence, 10 keV-1 MeV (erg cm^-2, GBM)", xlab=paste(strwrap("Prompt Peak Energy, 10 keV-1 MeV (keV, GBM)", width = 25), collapse = "\n"), zlab="t90 (s, GBM)", col = temp_color)
 contour3d(newdat.dv, level=0, x=newdat.list$Peak_E, y=newdat.list$Fluence, z=newdat.list$t90, add=T)
 
-non_Swift_redshifts <- read_excel("/Users/nnuessle/Documents/Work/burst_matching_algorithm/actual_paper/prompt-and-afterglow-matching/edited_non_Swift_redshifts.xlsx", col_types = c("skip", "skip", "skip", "skip", "text", "skip", "skip", "skip", "skip", "skip", "skip", "skip", "skip", "text"))
-#this is technically cheating but i honestly am too lazy to think up a better idea
-Bursts_with_z <- c(as.integer(gsub("GRB", "", non_Swift_redshifts$`GRB Name`))) #this removes every time it says "GRB" in a GRB name
-zs_of_bursts <- c(as.double(gsub("[^0-9.-]", "", non_Swift_redshifts$zc))) #and this removes anything non-numeric from the redshift, since I didn't remember seeing any pairs or ranges. There are a number of upper limits that will get lost though (I mean, the value is preserved, but the fact that it's an upper limit is not).
-new_redshifts<-no_NA_Goldstein_S2_Data$Name %in% Bursts_with_z
-new_bursts_with_z<-no_NA_Goldstein_S2_Data[new_redshifts, ]
-matched_zs=rep(0, nrow(new_bursts_with_z))
-for(i in 1:length(new_bursts_with_z)){
-  for(j in 1:length(Bursts_with_z)){
-    if(new_bursts_with_z$Name[i]==Bursts_with_z[j]){
-      matched_zs[i]=zs_of_bursts[j] #very inefficient, but it does work
-    }
-  }
-}
-new_bursts_with_z$Redshift<-matched_zs
-old_bursts_with_z<-no_NA_Goldstein_S6_Data #so here's all the ones matched using sweeft
-joint_bursts_with_z<-bind_rows(new_bursts_with_z, old_bursts_with_z) #and we glue them together
-length(unique(joint_bursts_with_z$Name)) == nrow(joint_bursts_with_z) #this just verifies that every burst isn't a repeat of any other one--you want it to return true
-new_joint_bursts_with_z<-data.frame(cbind(joint_bursts_with_z$Name, log10(joint_bursts_with_z$`Peak E. over Flue.`), log10(joint_bursts_with_z$E_P_Over_S_Err), log10(joint_bursts_with_z$`Hardness Ratio`), log10(joint_bursts_with_z$t90/(1+joint_bursts_with_z$Redshift)), log10(joint_bursts_with_z$t90_err), log10(joint_bursts_with_z$Peak_E/(1+joint_bursts_with_z$Redshift)), log10(joint_bursts_with_z$Peak_E_Err), log10(joint_bursts_with_z$Fluence), log10(joint_bursts_with_z$Fluence_Err), joint_bursts_with_z$Redshift))
-colnames(new_joint_bursts_with_z)<-c("Name", "Peak E. over Flue.", "E_P_Over_S_Err", "Hardness Ratio", "t90", "t90_err", "Peak_E", "Peak_E_err", "Fluence", "Fluence_Err", "Redshift")
-#And now we gotta do the actual triple svm, which is gonna be a pain and a half.
-# Get decision values for a new data grid
-newerdat.list = lapply(training_set, function(x) seq(min(x), max(x), len=nnew))
-newerdat      = expand.grid(newerdat.list)
-names(newerdat) <- c("Peak_E", "Fluence", "t90")
-# names(newdater) <- c("Peak_E_over_Flu", "t90")
-newerdat.pred = predict(svmfit, newdata=newerdat, decision.values=T)
-newerdat.dv   = attr(newerdat.pred, 'decision.values')
-newerdat.dv   = array(newerdat.dv, dim=rep(nnew, 3))
-predicted_svm_2<-predict(svmfit, new_joint_bursts_with_z, probability=TRUE)
-predictions_2<-attr(predicted_svm_2, "probabilities")[,1]
-temp_color_2<-diverging_hcl(length(predictions_2))[rank(predictions_2)]
-plot3d(x=new_joint_bursts_with_z$`Peak E. over Flue.`, y=new_joint_bursts_with_z$t90, z=new_joint_bursts_with_z$Redshift, ylab="t90 (s, GBM)", xlab=expression('Prompt Peak Energy over Fluence, 10 keV-1 MeV ('~keV ~ cm^{2}~ erg^{-1}~', GBM)'), zlab="Redshift, various", col = temp_color_2)
-contour3d(newdat.dv, level=0, x=newdat.list$Peak_E, y=newdat.list$Fluence, z=newdat.list$t90, add=T)
+# non_Swift_redshifts <- read_excel("/Users/nnuessle/Documents/Work/burst_matching_algorithm/actual_paper/prompt-and-afterglow-matching/edited_non_Swift_redshifts.xlsx", col_types = c("skip", "skip", "skip", "skip", "text", "skip", "skip", "skip", "skip", "skip", "skip", "skip", "skip", "text"))
+# #this is technically cheating but i honestly am too lazy to think up a better idea
+# Bursts_with_z <- c(as.integer(gsub("GRB", "", non_Swift_redshifts$`GRB Name`))) #this removes every time it says "GRB" in a GRB name
+# zs_of_bursts <- c(as.double(gsub("[^0-9.-]", "", non_Swift_redshifts$zc))) #and this removes anything non-numeric from the redshift, since I didn't remember seeing any pairs or ranges. There are a number of upper limits that will get lost though (I mean, the value is preserved, but the fact that it's an upper limit is not).
+# new_redshifts<-no_NA_Goldstein_S2_Data$Name %in% Bursts_with_z
+# new_bursts_with_z<-no_NA_Goldstein_S2_Data[new_redshifts, ]
+# matched_zs=rep(0, nrow(new_bursts_with_z))
+# for(i in 1:length(new_bursts_with_z)){
+#   for(j in 1:length(Bursts_with_z)){
+#     if(new_bursts_with_z$Name[i]==Bursts_with_z[j]){
+#       matched_zs[i]=zs_of_bursts[j] #very inefficient, but it does work
+#     }
+#   }
+# }
+# new_bursts_with_z$Redshift<-matched_zs
+# old_bursts_with_z<-no_NA_Goldstein_S6_Data #so here's all the ones matched using sweeft
+# joint_bursts_with_z<-bind_rows(new_bursts_with_z, old_bursts_with_z) #and we glue them together
+# length(unique(joint_bursts_with_z$Name)) == nrow(joint_bursts_with_z) #this just verifies that every burst isn't a repeat of any other one--you want it to return true
+# new_joint_bursts_with_z<-data.frame(cbind(joint_bursts_with_z$Name, log10(joint_bursts_with_z$`Peak E. over Flue.`), log10(joint_bursts_with_z$E_P_Over_S_Err), log10(joint_bursts_with_z$`Hardness Ratio`), log10(joint_bursts_with_z$t90/(1+joint_bursts_with_z$Redshift)), log10(joint_bursts_with_z$t90_err), log10(joint_bursts_with_z$Peak_E/(1+joint_bursts_with_z$Redshift)), log10(joint_bursts_with_z$Peak_E_Err), log10(joint_bursts_with_z$Fluence), log10(joint_bursts_with_z$Fluence_Err), joint_bursts_with_z$Redshift))
+# colnames(new_joint_bursts_with_z)<-c("Name", "Peak E. over Flue.", "E_P_Over_S_Err", "Hardness Ratio", "t90", "t90_err", "Peak_E", "Peak_E_err", "Fluence", "Fluence_Err", "Redshift")
+# #And now we gotta do the actual triple svm, which is gonna be a pain and a half.
+# # Get decision values for a new data grid
+# newerdat.list = lapply(training_set, function(x) seq(min(x), max(x), len=nnew))
+# newerdat      = expand.grid(newerdat.list)
+# names(newerdat) <- c("Peak_E", "Fluence", "t90")
+# # names(newdater) <- c("Peak_E_over_Flu", "t90")
+# newerdat.pred = predict(svmfit, newdata=newerdat, decision.values=T)
+# newerdat.dv   = attr(newerdat.pred, 'decision.values')
+# newerdat.dv   = array(newerdat.dv, dim=rep(nnew, 3))
+# predicted_svm_2<-predict(svmfit, new_joint_bursts_with_z, probability=TRUE)
+# predictions_2<-attr(predicted_svm_2, "probabilities")[,1]
+# temp_color_2<-diverging_hcl(length(predictions_2))[rank(predictions_2)]
+# plot3d(x=new_joint_bursts_with_z$`Peak E. over Flue.`, y=new_joint_bursts_with_z$t90, z=new_joint_bursts_with_z$Redshift, ylab="t90 (s, GBM)", xlab=expression('Prompt Peak Energy over Fluence, 10 keV-1 MeV ('~keV ~ cm^{2}~ erg^{-1}~', GBM)'), zlab="Redshift, various", col = temp_color_2)
+# contour3d(newdat.dv, level=0, x=newdat.list$Peak_E, y=newdat.list$Fluence, z=newdat.list$t90, add=T)
 ```
 
 What follows is the plots for the efficiency hypothesis, linking the prompt and afterglow isotropic energies as derived in the python code. As one can see, this relationship does have good significance in addition to its clear physical relevance to both the burst mechanism and the circumburst environment.
@@ -498,7 +498,7 @@ set.seed(167)
 errorDistn<-"t5" #choose from "t5", "U(-5, 5)"
 n <-200 #sample size
 bootType<-"residual" #type of bootstrap ("residual or "wild"). we'll do the residual first.
-R<- 1 #number of original samples to generate
+R<- 5 #number of original samples to generate
 slope<-modGehrels3$coefficients[2] #true beta 1 (unlikely)
 intercept<-modGehrels3$coefficients[1] #true beta 0 (unlikely)
 B<-10000 #number of bootstrap samples
@@ -604,10 +604,10 @@ par(mfrow=c(1,3))
 for(r in 1:R){
  # make density curve of slope estimates
   slopeDens <- density(b.slope[,r])
-  # plot(slopeDens, main=paste(strwrap(paste("Estimated slope for n=200, t_5 errors, wild boot., sample", r), width = 30), collapse = "\n"))
-  # abline(v=slope, col="red")
-  # abline(v=ls.slope, col="blue", lty=2)
-  # legend("topright", c("Boot. Distn.", "Linear Model", "L.S.Est."), col=c(1,2,3), lty=c(1,1,2), cex = 0.8)
+  plot(slopeDens, main=paste(strwrap(paste("Estimated slope for n=200, t_5 errors, wild boot., sample", r), width = 30), collapse = "\n"))
+  abline(v=slope, col="red")
+  abline(v=ls.slope, col="blue", lty=2)
+  legend("topright", c("Boot. Distn.", "Linear Model", "L.S.Est."), col=c(1,2,3), lty=c(1,1,2), cex = 0.8)
   ggplot(slopeDens, aes(x = x, y = y))+geom_point(pch=20)+geom_vline(xintercept=slope, color="red")+geom_vline(xintercept=ls.slope, linetype=2, color="blue")+ggtitle(paste(strwrap(paste("Estimated slope for n=200, t_5 errors, residual boot., sample", r), width = 30), collapse = "\n"))
   plot(NULL ,xaxt='n',yaxt='n',bty='n',ylab='',xlab='', xlim=0:1, ylim=0:1)
   legend("topright", c("Boot. Distn.", "Linear Model", "L.S.Est."), col=c(1,2,3), lty=c(1,1,2), cex = 0.8)

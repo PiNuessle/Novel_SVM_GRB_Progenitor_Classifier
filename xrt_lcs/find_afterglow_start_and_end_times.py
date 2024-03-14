@@ -944,7 +944,7 @@ def afterglow_fluence_err_finder(spectral_sample_data, ag_instrument_data, place
 # %%
 ##Data imports 1##
 #this imports every.single.Swift.burst.ever seen. I cannot comment it out as it's used to figure out where and what dat ais available. You'd think there'd be an
-#automatic way to do this, but...
+#automatic way to do this, but... This isn't the real issue
 GRB_list=["GRB230204B", "GRB230204A", "GRB230123A",
                                               "GRB230116D", "GRB221231A", "GRB221226B",\
                                               "GRB221216A", "GRB221202A", "GRB221201A",\
@@ -1341,7 +1341,8 @@ GRB_list=["GRB230204B", "GRB230204A", "GRB230123A",
                                               "GRB080916A", "GRB080915A", "GRB080913", \
                                               "GRB080906", "GRB080905B", "GRB080905A", \
                                               "GRB080903", "GRB080828", "GRB080825B"]
-# This line may be specifically the overlapping GBM-BAT GRBs
+# THIS IS. This line has to specify all the overlapping GBM-BAT GRBs, and it's not flexible because every single one had to be named in the standard way,
+# which the Fermi-GBM data /doesn't currently include/. So I had to find all their names by hand. I would recommend future users find a better way.
 GRB_search_list=['GRB220711B', 'GRB220618A', 'GRB220611A', 'GRB220518A', 'GRB220403B', \
                  'GRB220325A', 'GRB211211A', 'GRB211129A', 'GRB211024B', 'GRB210619B', \
                  'GRB210610A', 'GRB210514A', 'GRB210307A', 'GRB210226A', 'GRB210222B', \
